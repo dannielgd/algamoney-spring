@@ -28,8 +28,9 @@ public class AutohrizationServerConfig extends AuthorizationServerConfigurerAdap
 			.withClient("angular") //Nome do cliente
 			.secret("@ngul@r0") //senha do cliente
 			.scopes("read", "write") //define qual escopo está o cliente. (limitações)
-			.authorizedGrantTypes("password") //o fluxo de senha. Usa-se o usuario e senha para fazer o access token
-			.accessTokenValiditySeconds(1800); //quantos segundos o token fica ativo
+			.authorizedGrantTypes("password", "refresh_token") //o fluxo de senha. Usa-se o usuario e senha para fazer o access token
+			.accessTokenValiditySeconds(20) //quantos segundos o token fica ativo
+			.refreshTokenValiditySeconds(3600*24);
 	}
 	
 	@Override
@@ -37,6 +38,7 @@ public class AutohrizationServerConfig extends AuthorizationServerConfigurerAdap
 		endpoints
 			.tokenStore(tokenStore()) //armazena o token em algum lugar para recuperar depois.
 			.accessTokenConverter(accessTokenConverter())
+			.reuseRefreshTokens(false) //enquanto o usuário está usando a aplicação, ele nao se desloga
 			.authenticationManager(authenticationManager);
 	}
 	
