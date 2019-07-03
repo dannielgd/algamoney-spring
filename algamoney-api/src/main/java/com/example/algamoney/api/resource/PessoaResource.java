@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,11 +39,13 @@ public class PessoaResource {
 	private ApplicationEventPublisher publisher;
 	
 	@GetMapping
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA') and #oauth2.hasScope('read')")
 	public List<Pessoa> listar() {
 		return pessoaRepository.findAll();
 	}
 	
 	@PostMapping
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PESSOA') and #oauth2.hasScope('read')")
 	public ResponseEntity<Pessoa> criar(@Valid @RequestBody Pessoa pessoa, HttpServletResponse response) {
 		Pessoa pessoaSalva = pessoaRepository.save(pessoa);
 //		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{codigo}")
@@ -55,6 +58,7 @@ public class PessoaResource {
 	}
 	
 	@GetMapping("/{codigo}")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA') and #oauth2.hasScope('read')")
 	public ResponseEntity<Pessoa> buscarPeloCodigo(@PathVariable Long codigo) {
 		return pessoaRepository.findById(codigo)
 				.map(pessoa -> ResponseEntity.ok(pessoa))
@@ -62,6 +66,7 @@ public class PessoaResource {
 	}
 	
 	@DeleteMapping("/{codigo}")
+	@PreAuthorize("hasAuthority('ROLE_REMOVER_PESSOA') and #oauth2.hasScope('read')")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long codigo) {
 		pessoaRepository.deleteById(codigo);
