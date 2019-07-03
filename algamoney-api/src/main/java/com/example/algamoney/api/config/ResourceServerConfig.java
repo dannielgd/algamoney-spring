@@ -1,14 +1,18 @@
 package com.example.algamoney.api.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler;
 
 @Configuration
 @EnableResourceServer
+@EnableGlobalMethodSecurity(prePostEnabled = true) //Habilita a segurança nos métodos
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	
 //	@Autowired
@@ -30,7 +34,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.antMatchers("/categorias").permitAll() //para categorias, qualquer um acessa
+			//.antMatchers("/categorias").permitAll() //para categorias, qualquer um acessa
 			.anyRequest().authenticated() //Precisa estar autenticado para qualquer requisição
 			
 			.and()
@@ -52,5 +56,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 //	public PasswordEncoder passwordEncoder() {
 //		return new BCryptPasswordEncoder();
 //	}
+	
+	public MethodSecurityExpressionHandler createExpressionHandler() {
+		return new OAuth2MethodSecurityExpressionHandler();
+	}
 	
 }

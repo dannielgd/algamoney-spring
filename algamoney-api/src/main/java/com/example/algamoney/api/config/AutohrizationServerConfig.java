@@ -34,6 +34,13 @@ public class AutohrizationServerConfig extends AuthorizationServerConfigurerAdap
 			.scopes("read", "write") //define qual escopo está o cliente. (limitações)
 			.authorizedGrantTypes("password", "refresh_token") //o fluxo de senha. Usa-se o usuario e senha para fazer o access token
 			.accessTokenValiditySeconds(1800) //quantos segundos o token fica ativo
+			.refreshTokenValiditySeconds(3600*24)
+		.and()
+			.withClient("mobile") //Nome do cliente
+			.secret("$2a$10$YnDT.82RBA7yt0K7NSEUW.gjVFlnWW38aMFzxXhL1tEFpOADlg7MS") //senha do cliente - @ngul@r0
+			.scopes("read") //define qual escopo está o cliente. (limitações)
+			.authorizedGrantTypes("password", "refresh_token") //o fluxo de senha. Usa-se o usuario e senha para fazer o access token
+			.accessTokenValiditySeconds(1800) //quantos segundos o token fica ativo
 			.refreshTokenValiditySeconds(3600*24);
 	}
 	
