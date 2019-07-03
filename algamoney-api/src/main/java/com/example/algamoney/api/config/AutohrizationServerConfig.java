@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -19,6 +20,9 @@ public class AutohrizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
 	/**
 	 * Autoriza o cliente a usar o recurso
 	 */
@@ -26,10 +30,10 @@ public class AutohrizationServerConfig extends AuthorizationServerConfigurerAdap
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory()
 			.withClient("angular") //Nome do cliente
-			.secret("@ngul@r0") //senha do cliente
+			.secret("$2a$10$GKIwuojnvZUAJKUBtI8Au..EbTX51BreHtQwppNDsySyVGQ.ln6E.") //senha do cliente - @ngul@r0
 			.scopes("read", "write") //define qual escopo está o cliente. (limitações)
 			.authorizedGrantTypes("password", "refresh_token") //o fluxo de senha. Usa-se o usuario e senha para fazer o access token
-			.accessTokenValiditySeconds(20) //quantos segundos o token fica ativo
+			.accessTokenValiditySeconds(1800) //quantos segundos o token fica ativo
 			.refreshTokenValiditySeconds(3600*24);
 	}
 	
@@ -39,6 +43,7 @@ public class AutohrizationServerConfig extends AuthorizationServerConfigurerAdap
 			.tokenStore(tokenStore()) //armazena o token em algum lugar para recuperar depois.
 			.accessTokenConverter(accessTokenConverter())
 			.reuseRefreshTokens(false) //enquanto o usuário está usando a aplicação, ele nao se desloga
+			.userDetailsService(this.userDetailsService) //Pega o usuário e senha e valida
 			.authenticationManager(authenticationManager);
 	}
 	
