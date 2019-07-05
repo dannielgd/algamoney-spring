@@ -1,5 +1,6 @@
 package com.example.algamoney.api.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -57,6 +58,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 //		return new BCryptPasswordEncoder();
 //	}
 	
+	@Bean
 	public MethodSecurityExpressionHandler createExpressionHandler() {
 		return new OAuth2MethodSecurityExpressionHandler();
 	}
