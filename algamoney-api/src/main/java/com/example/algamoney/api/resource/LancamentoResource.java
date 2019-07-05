@@ -30,6 +30,7 @@ import com.example.algamoney.api.exceptionhandler.AlgamoneyExceptionHandler.Erro
 import com.example.algamoney.api.model.Lancamento;
 import com.example.algamoney.api.repository.LancamentoRepository;
 import com.example.algamoney.api.repository.filter.LancamentoFilter;
+import com.example.algamoney.api.repository.projection.ResumoLancamento;
 import com.example.algamoney.api.service.LancamentoService;
 import com.example.algamoney.api.service.exception.PessoaInexistenteOuInativaException;
 
@@ -52,7 +53,7 @@ public class LancamentoResource {
 	@GetMapping
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
 //	public List<Lancamento> pesquisar(LancamentoFilter lancamentoFilter, Pageable pageable) {
-		public Page<Lancamento> pesquisar(LancamentoFilter lancamentoFilter, Pageable pageable) {
+	public Page<Lancamento> pesquisar(LancamentoFilter lancamentoFilter, Pageable pageable) {
 		
 //		return lancamentoRepository.findAll();
 		return lancamentoRepository.filtrar(lancamentoFilter, pageable);
@@ -60,6 +61,14 @@ public class LancamentoResource {
 //		return lancamentoRepository.findByDataVencimentoBetween(lancamentoFilter.getDataVencimentoDe(), lancamentoFilter.getDataVencimentoAte());
 		
 		//return null;
+	}
+	
+	@GetMapping(params = "resumo")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO')")
+	public Page<ResumoLancamento> resumir(LancamentoFilter lancamentoFilter, Pageable pageable) {
+		
+		return lancamentoRepository.resumir(lancamentoFilter, pageable);
+		
 	}
 	
 	@GetMapping("/{codigo}")
