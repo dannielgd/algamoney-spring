@@ -16,7 +16,9 @@
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
-		<java.version>12</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
 	</properties>
 
 	<dependencies>
@@ -57,13 +59,11 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.9</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-jpamodelgen</artifactId>
-			<version>5.4.3.Final</version>
 		</dependency>
 
 
@@ -106,8 +106,8 @@
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>12</source>
-					<target>12</target>
+					<source>1.8</source>
+					<target>1.8</target>
 					<failOnError>false</failOnError>
 					<generatedSourcesDirectory>src/main/java</generatedSourcesDirectory>
 				</configuration>
